@@ -12,7 +12,7 @@ import java.util.List;
 @SpringBootTest
 public class SampleTest {
 
-
+//test
     @Resource
     private UserMapper userMapper;
 
