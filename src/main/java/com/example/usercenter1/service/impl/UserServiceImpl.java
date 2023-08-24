@@ -52,7 +52,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 账户不能包含特殊字符
-        String validPattern = "\\pP|\\pS|\\s+";
+        String validPattern = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
         Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         if (matcher.find()) {
             return -1;
