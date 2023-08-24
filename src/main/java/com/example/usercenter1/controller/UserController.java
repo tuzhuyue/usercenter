@@ -9,6 +9,7 @@ import com.example.usercenter1.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import static com.example.usercenter1.constant.UserConstant.ADMIN_ROLE;
 import static com.example.usercenter1.constant.UserConstant.USER_LOGIN_STATE;
+
 
 /**
  * 用户接口
@@ -85,7 +87,8 @@ public class UserController {
         if (StringUtils.isNotBlank(username)){
             queryWrapper.like("username",username);
         }
-        return userService.list(queryWrapper);
+        List<User> userList = userService.list(queryWrapper);
+        return userList.stream().map(user -> userService.getSafetyUser(user)).collect(Collectors.toList());
     }
 
     /**
