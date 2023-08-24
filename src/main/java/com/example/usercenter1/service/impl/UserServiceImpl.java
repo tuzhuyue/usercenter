@@ -24,7 +24,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Resource
     private  UserMapper userMapper;
 
-
+    /**
+     * 用户注册
+     * @param userAccount   账户
+     * @param userPassword  密码
+     * @param checkPassword 确认密码
+     * @return  新用户id
+     */
     @Override
     public long userRegist(String userAccount, String userPassword, String checkPassword) {
        //校验
