@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 * @description 针对表【user(用户表)】的数据库操作Service
 * @createDate 2023-08-23 16:29:30
 */
+
 public interface UserService extends IService<User> {
+
+
     /**
      * 用户注册
      * @param userAccount   账户

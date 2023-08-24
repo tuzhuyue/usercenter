@@ -14,6 +14,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.example.usercenter1.constant.UserConstant.USER_LOGIN_STATE;
+
 @Slf4j
 /**
 * @author 土竹月
@@ -29,7 +32,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * 盐值，混淆密码
      */
     private static final String SALT = "tuzhuyue";
-    private static final String USER_LOGIN_STATE = "userLoginState";
+
 
     /**
      * 用户注册
@@ -126,6 +129,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         safetyUser.setUserStatus(user.getUserStatus());
         safetyUser.setPhone(user.getPhone());
         safetyUser.setCreateTime(user.getCreateTime());
+        safetyUser.setUserRole(user.getUserRole());
         // 4.记录用户的登录状态
         request.getSession().setAttribute(USER_LOGIN_STATE,safetyUser);
         //返回脱敏后的信息
