@@ -37,7 +37,7 @@ public class UserController {
      * @return 注册请求
      */
     @PostMapping("/register")
-    public Long userRegist(@RequestBody UserRegisterRequest userRegisterRequest){
+    public Long userRegist(@RequestBody UserRegisterRequest userRegisterRequest) {
         //校验参数
         if (userRegisterRequest == null){
             return null;
@@ -72,6 +72,37 @@ public class UserController {
         return userService.userLogin(userAccount, userPassword,request);
     }
 
+    /**
+     * 用户注销
+     * @param request
+     * @return
+     */
+    @PostMapping("/logout")
+    public Integer userLogout(HttpServletRequest request){
+        //校验参数
+        if (request == null){
+            return null;
+        }
+        return userService.userLogout(request);
+    }
+
+    /**
+     * 获取用户登录态
+     * @param request
+     * @return
+     */
+    @GetMapping("/current")
+    public  User getCurrentUser(HttpServletRequest request){
+        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+        User currentUser =(User) userObj;
+        if (currentUser == null){
+            return null;
+        }
+        long userId = currentUser.getId();
+        //todo 校验用户是否合法
+        User user = userService.getById(userId);
+        return userService.getSafetyUser(user);
+    }
     /**
      * 查询
      * @param username

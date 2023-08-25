@@ -45,13 +45,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public long userRegist(String userAccount, String userPassword, String checkPassword) {
        //校验
         if (StringUtils.isAnyBlank(userAccount,userPassword,checkPassword)){
-            return -1;
+            return 0;
         }
         if (userAccount.length() < 4){
-            return -1;
+            return 0;
         }
         if (userPassword.length() < 8 || checkPassword.length() < 8){
-            return -1;
+            return 0;
         }
 
         // 账户不能包含特殊字符
@@ -70,7 +70,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.eq("userAccount", userAccount);
         long count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
-            return -1;
+            return 0;
         }
         // 2.加密
 
@@ -128,6 +128,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     public User getSafetyUser(User originUser) {
+        if (originUser == null){
+            return null;
+        }
         User safetyUser = new User();
         safetyUser.setId(originUser.getId());
         safetyUser.setUsername(originUser.getUsername());
@@ -140,6 +143,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         safetyUser.setCreateTime(originUser.getCreateTime());
         safetyUser.setUserRole(originUser.getUserRole());
         return safetyUser;
+    }
+
+    @Override
+    public int userLogout(HttpServletRequest request) {
+        //移除登录态
+        request.getSession().removeAttribute(USER_LOGIN_STATE);
+        return 1;
     }
 
 }
