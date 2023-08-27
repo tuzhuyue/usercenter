@@ -42,15 +42,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @return  新用户id
      */
     @Override
-    public long userRegist(String userAccount, String userPassword, String checkPassword) {
+    public long userRegist(String userAccount, String userPassword, String checkPassword,String planetCode) {
        //校验
-        if (StringUtils.isAnyBlank(userAccount,userPassword,checkPassword)){
+        if (StringUtils.isAnyBlank(userAccount,userPassword,checkPassword,planetCode)){
             return 0;
         }
         if (userAccount.length() < 4){
             return 0;
         }
         if (userPassword.length() < 8 || checkPassword.length() < 8){
+            return 0;
+        }
+        if (planetCode.length() < 5){
             return 0;
         }
 
@@ -72,6 +75,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (count > 0) {
             return 0;
         }
+        // 星球编号planetCode不能重复
+        queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("planetCode", planetCode);
+        count = userMapper.selectCount(queryWrapper);
+        if (count > 0) {
+            return 0;
+        }
         // 2.加密
 
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
@@ -79,6 +89,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = new User();
         user.setUserAccount(userAccount);
         user.setUserPassword(encryptPassword);
+        user.setPlanetCode(planetCode);
         boolean saveResult = this.save(user);
         if (!saveResult) {
             return -1;
@@ -142,6 +153,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         safetyUser.setPhone(originUser.getPhone());
         safetyUser.setCreateTime(originUser.getCreateTime());
         safetyUser.setUserRole(originUser.getUserRole());
+        safetyUser.setPlanetCode(originUser.getPlanetCode());
         return safetyUser;
     }
 

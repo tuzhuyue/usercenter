@@ -45,10 +45,11 @@ public class UserController {
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
+        String planetCode = userRegisterRequest.getPlanetCode();
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)){
             return null;
         }
-        return userService.userRegist(userAccount, userPassword, checkPassword);
+        return userService.userRegist(userAccount, userPassword, checkPassword,planetCode);
     }
 
     /**
